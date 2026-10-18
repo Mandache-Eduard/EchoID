@@ -8,3 +8,4 @@ Requirements from our software:
 
 Requirements 1-3 will be implemented by us, during this semester.
 For requirement 4, we will use a pre-trained, modern ASR (Automatic Speech Recognition) model (like Whisper from OpenAI)
+
