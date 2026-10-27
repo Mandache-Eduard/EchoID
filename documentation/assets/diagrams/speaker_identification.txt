@@ -1,0 +1,23 @@
+%%{init: {"theme": "base", "themeVariables": {"background": "#ffffff", "primaryColor": "#ffffff", "primaryTextColor": "#111111", "primaryBorderColor": "#333333", "lineColor": "#333333", "secondaryColor": "#ffffff", "tertiaryColor": "#ffffff", "edgeLabelBackground": "#ffffff", "fontSize": "20px"}}}%%
+flowchart TD
+    START([Identification mode selected])
+    START --> A[/Record arbitrary speech/]
+    A --> B["VAD and conditional noise reduction"]
+    B --> C{"Audio quality acceptable?"}
+
+    C -->|Yes| D["ECAPA-TDNN embedding extraction"]
+    D --> E["Cosine similarity and candidate ranking"]
+
+    DB[(Speaker Database)]
+    DB -.->|Read| E
+
+    E --> F{"Reliable and unambiguous match?"}
+    F -->|Yes| SUCCESS([Speaker identified])
+    F -->|No| G{"Attempts remaining? Max 3"}
+    C -->|No| G
+
+    G -->|Yes| A
+    G -->|No| FAIL([Identification unsuccessful])
+
+    classDef default fill:#ffffff,stroke:#333333,color:#111111,stroke-width:1.5px,font-size:20px;
+    linkStyle default stroke:#333333,stroke-width:1.5px;

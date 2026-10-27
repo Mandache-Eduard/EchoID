@@ -1,0 +1,26 @@
+%%{init: {"theme": "base", "themeVariables": {"background": "#ffffff", "primaryColor": "#ffffff", "primaryTextColor": "#111111", "primaryBorderColor": "#333333", "lineColor": "#333333", "secondaryColor": "#ffffff", "tertiaryColor": "#ffffff", "edgeLabelBackground": "#ffffff", "fontSize": "20px"}}}%%
+flowchart TD
+    START([Registration mode selected])
+    START --> A[/Record 3 prompted speech samples/]
+    A --> B["VAD and conditional noise reduction"]
+    B --> C{"All samples valid?"}
+
+    C -->|No| FAIL([Registration stopped: invalid audio])
+    C -->|Yes| D["ECAPA-TDNN embedding extraction"]
+
+    D --> E{"Embeddings consistent?"}
+    E -->|No| FAIL
+    E -->|Yes| F["Create reference embedding and compare"]
+
+    DB[(Speaker Database)]
+    DB -.->|Read| F
+
+    F --> G{"Potential existing user?"}
+    G -->|Yes| DUP([Registration stopped: possible duplicate])
+    G -->|No| H["Store new speaker profile"]
+
+    H -.->|Write| DB
+    H --> SUCCESS([Registration successful])
+
+    classDef default fill:#ffffff,stroke:#333333,color:#111111,stroke-width:1.5px,font-size:20px;
+    linkStyle default stroke:#333333,stroke-width:1.5px;
